@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^4.19.2",
     "inversify": "^6.0.2",
     "inversify-express-utils": "^6.4.6",

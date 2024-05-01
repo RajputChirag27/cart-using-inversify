@@ -7,7 +7,7 @@ import { container } from './inversify.config';
 import './controllers/SignupService.controller'; // Import your controllers to register them with InversifyExpressServer
 
 
-Connect to MongoDB
+// Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/myDatabase')
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Error connecting to MongoDB:', err));
@@ -35,6 +35,8 @@ export const createServer = () => {
     console.log(`Server is running on port ${PORT}`);
   });
 };
+
+createServer();
 
 // Export the Express app for testing purposes
 export default app;
