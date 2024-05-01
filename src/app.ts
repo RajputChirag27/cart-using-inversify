@@ -1,35 +1,32 @@
-import 'reflect-metadata';
+// app.ts
+import 'reflect-metadata'
 import express from 'express';
-import mongoose from 'mongoose';
 import { InversifyExpressServer } from 'inversify-express-utils';
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
 import { container } from './inversify.config';
-import './controllers/SignupService.controller'; // Import your controllers to register them with InversifyExpressServer
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/myDatabase')
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('Error connecting to MongoDB:', err));
+// Import controllers
+import './controllers/SignupService.controller';
+import './controllers/LoginService.controller';
 
-// Create InversifyExpressServer
-const server = new InversifyExpressServer(container);
+const app = express();
 
-// Configure middleware
-server.setConfig((app: express.Application) => {
-  app.use(express.json());
+app.use(bodyParser.json());
+
+// Set up mongoose connection
+mongoose.connect('mongodb://localhost:27017/mydb').then(() => {
+    console.log('Connected to database');
+}).catch((error) => {
+    console.error('Database connection error:', error);
+    process.exit(1);
 });
 
-// Create Express app
-const app = server.build();
+// Set up InversifyExpressServer
+const server = new InversifyExpressServer(container, null, { rootPath: '/api' }, app);
 
-// Start the server
-export const createServer = () => {
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
-};
+const appConfigured = server.build();
 
-createServer();
-
-// Export the Express app for testing purposes
-export default app;
+appConfigured.listen(3000, () => {
+    console.log('Server is running on port 3000');
+});

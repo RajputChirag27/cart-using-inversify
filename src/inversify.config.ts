@@ -2,10 +2,16 @@
 import { Container } from 'inversify';
 import { UserRepository } from './repositories/UserRepository';
 import { SignupService } from './services/SignupService';
+import { LoginService } from './services/LoginService';
+import { SignupController } from './controllers/SignupService.controller';
+import { LoginController } from './controllers/LoginService.controller';
 
 const container = new Container();
 
-container.bind<UserRepository>('UserRepository').to(UserRepository);
-container.bind<SignupService>('SignupService').to(SignupService);
+container.bind<UserRepository>(UserRepository).toSelf();
+container.bind<SignupService>(SignupService).toSelf();
+container.bind<LoginService>(LoginService).toSelf();
+container.bind<SignupController>(SignupController).toSelf();
+container.bind<LoginController>(LoginController).toSelf();
 
 export { container };

@@ -1,25 +1,27 @@
-// controllers/SignupService.controller.ts
+// controllers/SignupController.ts
 import { Request, Response } from 'express';
-import { controller, httpPost } from 'inversify-express-utils';
 import { inject } from 'inversify';
+import { controller, httpPost } from 'inversify-express-utils';
 import { SignupService } from '../services/SignupService';
+import { IUser } from '../models/User.model';
 import bcrypt from 'bcrypt'
-
-
 @controller('/signup')
-export class SignupServiceController {
-    constructor(@inject('SignupService') private signupService: SignupService) {}
+export class SignupController {
+    constructor(@inject(SignupService) private signupService: SignupService) {}
 
     @httpPost('/')
     async signup(req: Request, res: Response) {
-        const { name, email, password } = req.body;
-        const saltRounds = 10;
         try {
-            const hashedPassword = await bcrypt.hash(password,saltRounds);
-            const user = await this.signupService.signup(name, email, hashedPassword);
-            res.json(user);
+            const user: IUser = req.body;
+            // Hash password
+            const saltRounds = 10;
+            const hashedPassword : string = await bcrypt.hash(user.password,saltRounds)
+            user.password = hashedPassword;
+            const newUser = await this.signupService.signup(user);
+            res.status(201).json(newUser);
         } catch (error) {
-            res.status(500).json({ error: 'Failed to create user' });
+            console.error('Error in signup:', error);
+            res.status(500).json({ error: 'Internal server error' });
         }
     }
 }

@@ -1,9 +1,15 @@
+// repositories/UserRepository.ts
 import { injectable } from 'inversify';
-import User, { User as UserModel } from '../models/User.model';
+import { IUser } from '../models/User.model';
+import UserModel from '../models/User.model';
 
 @injectable()
 export class UserRepository {
-    async createUser(name: string, email: string, password: string): Promise<UserModel> {
-        return User.create({ name, email, password });
+    async createUser(user: IUser): Promise<IUser> {
+        return await UserModel.create(user);
+    }
+
+    async findByEmail(email: string): Promise<IUser | null> {
+        return await UserModel.findOne({ email }).exec();
     }
 }
