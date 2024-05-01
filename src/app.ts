@@ -7,20 +7,16 @@ import bodyParser from 'body-parser';
 import { container } from './inversify.config';
 
 // Import controllers
-import './controllers/SignupService.controller';
-import './controllers/LoginService.controller';
+// import './controllers/SignupService.controller';
+// import './controllers/LoginService.controller';
+// import './controllers/ProtectedController'
+import './config/connection'
 
 const app = express();
 
 app.use(bodyParser.json());
 
 // Set up mongoose connection
-mongoose.connect('mongodb://localhost:27017/mydb').then(() => {
-    console.log('Connected to database');
-}).catch((error) => {
-    console.error('Database connection error:', error);
-    process.exit(1);
-});
 
 // Set up InversifyExpressServer
 const server = new InversifyExpressServer(container, null, { rootPath: '/api' }, app);
