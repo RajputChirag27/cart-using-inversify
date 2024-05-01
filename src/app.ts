@@ -1,11 +1,9 @@
-// app.ts
 import 'reflect-metadata';
 import express from 'express';
 import mongoose from 'mongoose';
 import { InversifyExpressServer } from 'inversify-express-utils';
 import { container } from './inversify.config';
 import './controllers/SignupService.controller'; // Import your controllers to register them with InversifyExpressServer
-
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/myDatabase')
@@ -19,11 +17,6 @@ const server = new InversifyExpressServer(container);
 server.setConfig((app: express.Application) => {
   app.use(express.json());
 });
-
-// // Configure error handling
-// server.setErrorConfig((app: express.Application) => {
-//   // Add custom error handling middleware here if needed
-// });
 
 // Create Express app
 const app = server.build();
