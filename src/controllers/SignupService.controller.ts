@@ -1,31 +1,25 @@
-import { Request, Response } from "express";
-import { inject } from "inversify";
-import { controller, httpPost } from "inversify-express-utils";
-import SignupServiceInterface from "../interfaces/SignupService.interface";
-import { SignupService } from "../services/SignupService";
+// controllers/SignupService.controller.ts
+import { Request, Response } from 'express';
+import { controller, httpPost } from 'inversify-express-utils';
+import { inject } from 'inversify';
+import { SignupService } from '../services/SignupService';
 import bcrypt from 'bcrypt'
 
+
 @controller('/signup')
-export class SignupController {
-    private signupService;
-    constructor(@inject('SignupServiceInterface') signUpService : SignupService){
-        this.signupService = signUpService;
-    }
+export class SignupServiceController {
+    constructor(@inject('SignupService') private signupService: SignupService) {}
+
     @httpPost('/')
-    async signup(req: Request, res: Response): Promise<Response> {
+    async signup(req: Request, res: Response) {
         const { name, email, password } = req.body;
-        // console.log(name)
-        // console.log(email)
-        // console.log(password)
-        // console.log(this.signupService)
+        const saltRounds = 10;
         try {
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(password, salt);
-            // console.log(hashedPassword)
-            await this.signupService.signup(name, email, hashedPassword);
-            return res.status(201).json({ message: 'User signed up successfully' });
+            const hashedPassword = await bcrypt.hash(password,saltRounds);
+            const user = await this.signupService.signup(name, email, hashedPassword);
+            res.json(user);
         } catch (error) {
-            return res.status(500).json({ error: 'Internal Server Error' });
+            res.status(500).json({ error: 'Failed to create user' });
         }
     }
 }
