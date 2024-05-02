@@ -7,6 +7,7 @@ import { Profile } from "../../interfaces/ProfileInterface";
 import { AuthenticatedRequest} from "../../interfaces/AuthenticationInterface"
 import dotenv from 'dotenv';
 import { ProfileService } from "../../services/Profiles/ProfileService";
+import { authenticateJwt } from "../../middleware/authenticateJwt";
 dotenv.config();
 
 
@@ -14,29 +15,34 @@ dotenv.config();
 export class ProfileController {
     constructor(@inject(ProfileService) private profileService: ProfileService) { }
 
-    @httpPost('/AddProfile')
-    async addProfile(req: Request, res: Response) {
+    @httpPost('/AddProfile', authenticateJwt)
+    async addProfile(req: AuthenticatedRequest, res: Response) {
         try {
-         res.send("This is Profile")
-        } catch (error) {
+            const profile : Profile = req.body;
+            const profiles = await this.profileService.addProfiles(profile,req.user.email);
+            res.send(profiles); 
+             } catch (error) {
             console.error('Error in login:', error);
             res.status(500).json({ error: 'Internal server error', message: error });
         }
     }
-    @httpGet('/GetProfiles')
-    async getProfiles(req: Request, res: Response) {
+    @httpGet('/GetProfiles', authenticateJwt)
+    async getProfiles(req: AuthenticatedRequest, res: Response) {
         try {
-         res.send("This is GetProfiles")
+            const profiles = await this.profileService.getProfiles(req.user.email);
+            res.send(profiles);
+            // res.redirect('/profile/protected/getProfile');
         } catch (error) {
             console.error('Error in login:', error);
             res.status(500).json({ error: 'Internal server error', message: error });
         }
     }
 
-    @httpPost('/GetProfiles')
-    async getProfilesByName(req: Request, res: Response) {
+    @httpPost('/GetProfilesByName', authenticateJwt)
+    async getProfilesByName(req: AuthenticatedRequest, res: Response) {
         try {
-         res.send("This is Get ProfilesByName")
+         const profile = await this.profileService.getProfileByName(req.body.name, req.user.email);
+         res.send(profile);
         } catch (error) {
             console.error('Error in login:', error);
             res.status(500).json({ error: 'Internal server error', message: error });
