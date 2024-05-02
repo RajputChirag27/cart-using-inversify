@@ -60,11 +60,11 @@
                                 "properties": {
                                     "email": {
                                         "type": "string",
-                                        "example" : "passworsd1d@gmail.com"
+                                        "example": "passworsd1d@gmail.com"
                                     },
                                     "password": {
                                         "type": "string",
-                                        "example" : "1234"
+                                        "example": "1234"
                                     }
                                 },
                                 "required": [
@@ -92,9 +92,33 @@
             "get": {
                 "summary": "Protected Path With Authentication",
                 "description": "Protected Path Using JWT Authentication",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "passworsd1d@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "1234"
+                                    }
+                                },
+                                "required": [
+                                    "email",
+                                    "password"
+                                ]
+                            }
+                        }
+                    }
+                },
                 "security": [
                     {
-                        "BearerAuth": [] 
+                        "BearerAuth": []
                     }
                 ],
                 "responses": {
@@ -106,8 +130,89 @@
                     }
                 }
             }
+        },
+        "/api/products": {
+            "post": {
+                "summary": "For Adding the products",
+                "description": "Protected Path Using JWT Authentication for adding products",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product Added Successfully"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "401" : {
+                        "description" : "Unauthorized"
+                    }
+                }
+            }
+        },
+
+
+        "/api/products/getProductsByName": {
+            "post": {
+                "summary": "For Getting the products",
+                "description": "Get The Products by names here names are unique",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Pankha"
+                                    }
+                                },
+                                "required": [
+                                    "email",
+                                    "password"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Product Fetched Successfully"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/products/getAllProducts": {
+            "get": {
+                "summary": "For Getting all the products",
+                "description": "Get all the products by name",
+                "responses": {
+                    "200": {
+                        "description": "Product Fetched Successfully"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
         }
-        
     },
     "components": {
         "schemas": {
@@ -124,6 +229,23 @@
                         "type": "string"
                     },
                     "password": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Product": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "number"
+                    },
+                    "image": {
                         "type": "string"
                     }
                 }

@@ -10,6 +10,7 @@
       "sourceMap": true,
       "outDir": "./dist",
       "baseUrl": "./",
+      "forceConsistentCasingInFileNames": true,  
       "typeRoots": ["node_modules/@types"],
       // "types": ["reflect-metadata", "express"]
   },

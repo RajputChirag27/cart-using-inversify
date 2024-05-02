@@ -11,7 +11,7 @@ import { AuthenticatedRequest } from '../../interfaces/AuthenticationInterface';
 @controller('/products')
 export class ProductController {
     constructor(@inject(GetProductService) private getProductService: GetProductService, @inject(AddProductService) private addProductService: AddProductService) { }
-    @httpGet('/getProductsByName')
+    @httpPost('/getProductsByName')
     async getProductsByName(req: Request, res: Response) {
         try{
             const product : Product = req.body;
@@ -43,7 +43,7 @@ export class ProductController {
             const product : Product = req.body;
             const result = await this.addProductService.addProduct(product);
             console.log(result)
-            res.send(result)
+            res.send({result, message : "Product Added Successfully"})
         } catch (error) {
             console.error('Error in Adding Product:', error);
             res.status(500).json({ error: 'Internal server error', message: error });

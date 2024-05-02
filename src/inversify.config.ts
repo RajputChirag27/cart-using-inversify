@@ -11,6 +11,9 @@ import { GetProductService } from './services/Products/GetProductService';
 import { GetProductRepository } from './repositories/Products/GetProductRepository';
 import { AddProductRepository } from './repositories/Products/AddProductRepository';
 import { AddProductService } from './services/Products/AddProductService';
+import { ProfileRepostiory } from './repositories/Profiles/ProfileRepository';
+import { ProfileService } from './services/Profiles/ProfileService';
+import { ProfileController } from './controllers/Profile/ProfileController';
 const container = new Container();
 
 container.bind<UserRepository>(UserRepository).toSelf();
@@ -24,5 +27,8 @@ container.bind<GetProductService>(GetProductService).toSelf();
 container.bind<GetProductRepository>(GetProductRepository).toSelf();
 container.bind<AddProductService>(AddProductService).toSelf();
 container.bind<AddProductRepository>(AddProductRepository).toSelf();
+container.bind<ProfileRepostiory>(ProfileRepostiory).toSelf();
+container.bind<ProfileController>(ProfileController).toSelf();
+container.bind<ProfileService>(ProfileService).toSelf();
 
 export { container };
