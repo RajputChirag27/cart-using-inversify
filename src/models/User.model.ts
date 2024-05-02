@@ -1,11 +1,6 @@
 // models/User.ts
 import mongoose, { Schema, Document } from 'mongoose';
-
-export interface IUser extends Document {
-    name: string;
-    email: string;
-    password: string;
-}
+import { IUser } from 'src/interfaces/UserRepositoryInterface';
 
 const UserSchema: Schema = new Schema({
     name: { type: String, required: true },

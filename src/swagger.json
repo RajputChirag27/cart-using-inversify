@@ -1,0 +1,141 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Cart API Using Inversify",
+        "description": "Here I have created a cart api using IOC structure using Inversify Framework",
+        "version": "1.0.0",
+        "contact": {
+            "name": "Rajput Chirag",
+            "email": "csronly4@gmail.com"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000",
+            "description": "Backend Server"
+        },
+        {
+            "url": "http://localhost:4000",
+            "description": "Frontend Server"
+        }
+    ],
+    "paths": {
+        "/api/signup": {
+            "post": {
+                "summary": "Create a new user",
+                "description": "Create a new user with the provided details",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User created successfully"
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "summary": "User login",
+                "description": "Authenticate user with provided credentials",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example" : "passworsd1d@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example" : "1234"
+                                    }
+                                },
+                                "required": [
+                                    "email",
+                                    "password"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User authenticated successfully"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/protected": {
+            "get": {
+                "summary": "Protected Path With Authentication",
+                "description": "Protected Path Using JWT Authentication",
+                "security": [
+                    {
+                        "BearerAuth": [] 
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Protected Route"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        }
+        
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "in": "header",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

@@ -10,3 +10,5 @@ export class ProtectedController {
         res.send('Protected Route');
     }
 }
+
+
