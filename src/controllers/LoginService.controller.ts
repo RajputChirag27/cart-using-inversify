@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { inject } from 'inversify';
 import { controller, httpPost } from 'inversify-express-utils';
 import { LoginService } from '../services/LoginService';
-import { IUser } from '../models/User.model';
+import { IUser } from '../interfaces/UserRepositoryInterface';
 import { sign } from 'jsonwebtoken';
 
 @controller('/login')
@@ -25,7 +25,7 @@ export class LoginController {
             }
         } catch (error) {
             console.error('Error in login:', error);
-            res.status(500).json({ error: 'Internal server error' });
+            res.status(500).json({ error: 'Internal server error', message: error });
         }
     }
 }

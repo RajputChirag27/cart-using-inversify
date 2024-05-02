@@ -1,6 +1,6 @@
 // repositories/UserRepository.ts
 import { injectable } from 'inversify';
-import { IUser } from '../models/User.model';
+import { IUser } from '../interfaces/UserRepositoryInterface';
 import UserModel from '../models/User.model';
 
 @injectable()

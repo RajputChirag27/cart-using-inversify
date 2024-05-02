@@ -1,7 +1,7 @@
 // services/LoginService.ts
 import { injectable, inject } from 'inversify';
 import { UserRepository } from '../repositories/UserRepository';
-import { IUser } from '../models/User.model';
+import { IUser } from '../interfaces/UserRepositoryInterface';
 import bcrypt from 'bcrypt'
 
 @injectable()

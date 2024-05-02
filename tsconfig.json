@@ -6,10 +6,13 @@
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
       "esModuleInterop": true,
+      "resolveJsonModule": true,
       "sourceMap": true,
       "outDir": "./dist",
       "baseUrl": "./",
-      "types": ["reflect-metadata", "express"]
+      "forceConsistentCasingInFileNames": true,  
+      "typeRoots": ["node_modules/@types"],
+      // "types": ["reflect-metadata", "express"]
   },
   "include": [
       "./src/**/*.ts"
