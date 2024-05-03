@@ -4,6 +4,7 @@ import { UserRepository } from '../repositories/UserRepository';
 import { IUser } from '../interfaces/UserRepositoryInterface';
 import bcrypt from 'bcrypt'
 
+
 @injectable()
 export class LoginService {
     constructor(@inject(UserRepository) private userRepository: UserRepository) { }
@@ -15,6 +16,25 @@ export class LoginService {
             return user;
         } else {
             return null;
+        }
+    }
+
+    async generateOTP(email: string, length: number): Promise<string> {
+        const user = await this.userRepository.findByEmail(email);
+        if (user) {
+            const otp = await this.userRepository.generateOtp(length);
+            await this.userRepository.sendEmail(email, otp.toString());
+            return otp.toString();
+        } else {
+            throw new Error("User not Found");
+        }
+    }
+    
+    async verifyOTP(otp: string, inputOTP: string): Promise<boolean> {
+        if (otp === inputOTP) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

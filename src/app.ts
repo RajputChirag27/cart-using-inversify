@@ -1,13 +1,13 @@
 // app.ts
 import 'reflect-metadata'
 import express from 'express';
-import { InversifyExpressServer } from 'inversify-express-utils';
+import { InversifyExpressServer, cookies } from 'inversify-express-utils';
 import mongoose from 'mongoose';
-import bodyParser from 'body-parser';
 import { container } from './inversify.config';
 import swaggerUi from 'swagger-ui-express'
 import swaggerDocument from './swagger.json'
-
+import cookieParser from 'cookie-parser'
+import session from 'express-session'
 
 // Import controllers
 // import './controllers/SignupService.controller';
@@ -18,8 +18,16 @@ import swaggerDocument from './swagger.json'
 import './config/connection'
 
 const app = express();
+app.use(cookieParser());
+app.use(express.json());
 
-app.use(bodyParser.json());
+
+app.use(session({
+    secret: 'your_secret_key', // Replace with a random secret key
+    resave: true,
+    saveUninitialized: false
+}));
+
 
 // Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

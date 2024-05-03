@@ -4,6 +4,7 @@ import { injectable, inject } from 'inversify';
 import bcrypt from 'bcrypt'
 import { ProfileRepostiory } from '../../repositories/Profiles/ProfileRepository';
 import { Profile } from '../../interfaces/ProfileInterface';
+import jwt from 'jsonwebtoken';
 
 @injectable()
 export class ProfileService {
@@ -27,6 +28,11 @@ export class ProfileService {
 
         const profile: Profile = await this.profileRepository.getProfileByName(name,id);
         return profile;
+    }
+
+    async generateToken(profile: Profile): Promise<string>{
+        const token = await this.profileRepository.generateToken(profile);
+        return token;
     }
 
 

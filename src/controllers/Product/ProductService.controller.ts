@@ -6,6 +6,7 @@ import { GetProductService } from '../../services/Products/GetProductService';
 import { AddProductService } from '../../services/Products/AddProductService';
 import { Product } from '../../interfaces/ProductInterface';
 import { AuthenticatedRequest } from '../../interfaces/AuthenticationInterface';
+import isAdmin from '../../middleware/isAdmin';
 
 
 @controller('/products')
@@ -37,7 +38,7 @@ export class ProductController {
     }
 
 
-    @httpPost('/', authenticateJwt)
+    @httpPost('/', authenticateJwt, isAdmin)
     async addProduct(req: AuthenticatedRequest, res: Response) {
         try {
             const product : Product = req.body;

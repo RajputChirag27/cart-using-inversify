@@ -42,7 +42,9 @@ export class ProfileController {
     async getProfilesByName(req: AuthenticatedRequest, res: Response) {
         try {
          const profile = await this.profileService.getProfileByName(req.body.name, req.user.email);
-         res.send(profile);
+         const token = await this.profileService.generateToken(profile)
+         res.cookie('token1', token, { httpOnly: true });
+         res.send({profile, token : token});
         } catch (error) {
             console.error('Error in login:', error);
             res.status(500).json({ error: 'Internal server error', message: error });

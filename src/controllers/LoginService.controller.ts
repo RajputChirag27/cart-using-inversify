@@ -5,9 +5,11 @@ import { controller, httpPost } from 'inversify-express-utils';
 import { LoginService } from '../services/LoginService';
 import { IUser } from '../interfaces/UserRepositoryInterface';
 import { sign } from 'jsonwebtoken';
+import session from 'express-session'
 
 @controller('/login')
 export class LoginController {
+    
     constructor(@inject(LoginService) private loginService: LoginService) { }
 
     @httpPost('/')
@@ -28,4 +30,38 @@ export class LoginController {
             res.status(500).json({ error: 'Internal server error', message: error });
         }
     }
+
+    @httpPost('/generateOTP')
+    async generateOTP(req: any, res : any) {
+        try {
+            const email :string = req.body.email;
+            const length : number = 6; // Default OTP length is 6 digits
+            const otp = await this.loginService.generateOTP(email, length);
+            console.log(otp)
+            req.session.user = otp;
+            res.status(200).json({ otp });
+        } catch (error) {
+            console.error('Error generating OTP', error);
+            res.status(500).json({ error: 'Internal server error', message: error });
+        }
+    }
+
+    @httpPost('/verifyOTP')
+    async verifyOTP(req, res: Response) {
+        try {
+            const otp : string = req.session.otp;
+            if(otp){
+            const inputOTP : string = req.body;
+            const isValid = await this.loginService.verifyOTP(otp, inputOTP );
+
+            res.status(200).json({ isValid });
+        }else {
+            res.send("Otp not found");
+        }
+        } catch (error) {
+            console.error('Error verifying OTP', error);
+            res.status(500).json({ error: 'Internal server error', message: error });
+        }
+    }
 }
+

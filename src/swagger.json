@@ -22,6 +22,7 @@
     "paths": {
         "/api/signup": {
             "post": {
+                "tags": ["User"],
                 "summary": "Create a new user",
                 "description": "Create a new user with the provided details",
                 "requestBody": {
@@ -49,6 +50,7 @@
         },
         "/api/login": {
             "post": {
+                "tags": ["User"],
                 "summary": "User login",
                 "description": "Authenticate user with provided credentials",
                 "requestBody": {
@@ -90,32 +92,9 @@
         },
         "/api/protected": {
             "get": {
+                "tags": ["Protected"],
                 "summary": "Protected Path With Authentication",
                 "description": "Protected Path Using JWT Authentication",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "passworsd1d@gmail.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "example": "1234"
-                                    }
-                                },
-                                "required": [
-                                    "email",
-                                    "password"
-                                ]
-                            }
-                        }
-                    }
-                },
                 "security": [
                     {
                         "BearerAuth": []
@@ -133,6 +112,7 @@
         },
         "/api/products": {
             "post": {
+                "tags": ["Product"],
                 "summary": "For Adding the products",
                 "description": "Protected Path Using JWT Authentication for adding products",
                 "requestBody": {
@@ -167,6 +147,7 @@
 
         "/api/products/getProductsByName": {
             "post": {
+                "tags": ["Product"],
                 "summary": "For Getting the products",
                 "description": "Get The Products by names here names are unique",
                 "requestBody": {
@@ -182,8 +163,7 @@
                                     }
                                 },
                                 "required": [
-                                    "email",
-                                    "password"
+                                    "name"
                                 ]
                             }
                         }
@@ -201,8 +181,92 @@
         },
         "/api/products/getAllProducts": {
             "get": {
+                "tags": ["Product"],
                 "summary": "For Getting all the products",
                 "description": "Get all the products by name",
+                "responses": {
+                    "200": {
+                        "description": "Product Fetched Successfully"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/profile/AddProfile": {
+            "post": {
+                "tags": ["Profile"],
+                "summary": "For Adding the profile",
+                "description": "For Adding the profile",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Chirag"
+                                    }
+                                },
+                                "required": [
+                                   "name"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Product Added Successfully"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/profile/GetProfiles": {
+            "get": {
+                "tags": ["Profile"],
+                "summary": "For Getting the profile",
+                "description": "For Getting the profile",
+                "responses": {
+                    "200": {
+                        "description": "Product Fetched Successfully"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/profile/GetProfilesByName": {
+            "post": {
+                "tags": ["Profile"],
+                "summary": "For Getting the profile by name",
+                "description": "For Getting the profile by name",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Chirag"
+                                    }
+                                },
+                                "required": [
+                                   "name"
+                                ]
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Product Fetched Successfully"
@@ -249,8 +313,19 @@
                         "type": "string"
                     }
                 }
+            },
+            "Profile" : {
+                "type" : "object",
+                "properties" : {
+                    "name" : {
+                        "type" : "string"
+                    },
+                    "user_id" : {
+                        "type" : "string"
+                 }
             }
-        },
+        }
+    },
         "securitySchemes": {
             "BearerAuth": {
                 "type": "http",
