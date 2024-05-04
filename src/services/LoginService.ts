@@ -37,4 +37,14 @@ export class LoginService {
             return false;
         }
     }
+
+    
+    async findUser(email: string): Promise<IUser> {
+        const user = await this.userRepository.findByEmail(email);
+        if (user) {
+            return user;
+        } else {
+            throw new Error("User not Found");
+        }
+    }
 }

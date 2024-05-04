@@ -9,7 +9,7 @@ import session from 'express-session'
 
 @controller('/login')
 export class LoginController {
-    
+
     constructor(@inject(LoginService) private loginService: LoginService) { }
 
     @httpPost('/')
@@ -32,13 +32,14 @@ export class LoginController {
     }
 
     @httpPost('/generateOTP')
-    async generateOTP(req: any, res : any) {
+    async generateOTP(req: any, res: any) {
         try {
-            const email :string = req.body.email;
-            const length : number = 6; // Default OTP length is 6 digits
+            const email: string = req.body.email;
+            const length: number = 6; // Default OTP length is 6 digits
             const otp = await this.loginService.generateOTP(email, length);
             console.log(otp)
             req.session.user = otp;
+            req.session.email = email;
             res.status(200).json({ otp });
         } catch (error) {
             console.error('Error generating OTP', error);
@@ -49,15 +50,29 @@ export class LoginController {
     @httpPost('/verifyOTP')
     async verifyOTP(req, res: Response) {
         try {
-            const otp : string = req.session.otp;
-            if(otp){
-            const inputOTP : string = req.body;
-            const isValid = await this.loginService.verifyOTP(otp, inputOTP );
-
-            res.status(200).json({ isValid });
-        }else {
-            res.send("Otp not found");
-        }
+            const otp: string = req.session.user;
+            if (otp) {
+                const inputOTP: string = req.body.otp;
+                const isValid = await this.loginService.verifyOTP(otp, inputOTP);
+                const email = req.session.email
+                console.log(email, inputOTP);
+                if (isValid) {
+                    const message: string = "Logged In Successfully"
+                    const user = await this.loginService.findUser(email);
+                    if (user) {
+                        const token = sign({ email }, 'your-secret-key', { expiresIn: '1h' });
+                        res.status(200).json({ user, message, token });
+                        return token;
+                    } else {
+                        res.status(401).json({ error: 'User Not Found' });
+                    }
+                    req.session.destroy();
+                } else {
+                    res.status(401).json({ error: 'Invalid Otp' });
+                }
+            } else {
+                res.send("Otp not found");
+            }
         } catch (error) {
             console.error('Error verifying OTP', error);
             res.status(500).json({ error: 'Internal server error', message: error });
