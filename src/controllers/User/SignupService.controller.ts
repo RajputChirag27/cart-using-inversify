@@ -2,8 +2,8 @@
 import { Request, Response } from 'express';
 import { inject } from 'inversify';
 import { controller, httpPost } from 'inversify-express-utils';
-import { SignupService } from '../services/SignupService';
-import { IUser } from '../interfaces/UserRepositoryInterface';
+import { SignupService } from '../../services/SignupService';
+import { IUser } from '../../interfaces/UserRepositoryInterface';
 import bcrypt from 'bcrypt'
 @controller('/signup')
 export class SignupController {

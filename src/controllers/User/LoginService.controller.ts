@@ -2,8 +2,8 @@
 import { Request, Response } from 'express';
 import { inject } from 'inversify';
 import { controller, httpPost } from 'inversify-express-utils';
-import { LoginService } from '../services/LoginService';
-import { IUser } from '../interfaces/UserRepositoryInterface';
+import { LoginService } from '../../services/LoginService';
+import { IUser } from '../../interfaces/UserRepositoryInterface';
 import { sign } from 'jsonwebtoken';
 import session from 'express-session'
 
