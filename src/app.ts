@@ -15,7 +15,8 @@ import session from 'express-session'
 // import './controllers/ProtectedController'
 
 // Set up mongoose connection
-import './config/connection'
+// import './config/connection'
+import './config/index'
 
 const app = express()
 app.use(cookieParser())
