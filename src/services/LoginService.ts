@@ -35,9 +35,7 @@ export class LoginService {
     } else {
       return false
     }
-<<<<<<< HEAD
   }
-=======
 
     
     async findUser(email: string): Promise<IUser> {
@@ -48,5 +46,4 @@ export class LoginService {
             throw new Error("User not Found");
         }
     }
->>>>>>> 34c26481177ac940965435da8d58750010be1e28
 }

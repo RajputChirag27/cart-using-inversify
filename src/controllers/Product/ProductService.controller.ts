@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-import { Request, Response } from 'express'
-import { controller, httpGet, httpPost } from 'inversify-express-utils'
-import { authenticateJwt } from '../../middleware/authenticateJwt'
-import { inject } from 'inversify'
-import { GetProductService } from '../../services/Products/GetProductService'
-import { AddProductService } from '../../services/Products/AddProductService'
-import { Product } from '../../interfaces/ProductInterface'
-import { AuthenticatedRequest } from '../../interfaces/AuthenticationInterface'
-import isAdmin from '../../middleware/isAdmin'
-=======
 import { Request, Response } from 'express';
 import { controller, httpGet, httpPost } from 'inversify-express-utils';
 import { authenticateJwt } from '../../middleware/authenticateJwt';
@@ -20,7 +9,6 @@ import { AuthenticatedRequest } from '../../interfaces/AuthenticationInterface';
 import isAdmin from '../../middleware/isAdmin';
 import { ProductTypeInterface } from 'src/interfaces/ProductTypeInterface';
 
->>>>>>> 34c26481177ac940965435da8d58750010be1e28
 
 @controller('/products')
 export class ProductController {
@@ -64,9 +52,7 @@ export class ProductController {
       console.error('Error in Adding Product:', error)
       res.status(500).json({ error: 'Internal server error', message: error })
     }
-<<<<<<< HEAD
   }
-=======
 
 
     @httpPost('/addProductType', authenticateJwt, isAdmin)
@@ -82,5 +68,4 @@ export class ProductController {
         }
     }
 
->>>>>>> 34c26481177ac940965435da8d58750010be1e28
 }
