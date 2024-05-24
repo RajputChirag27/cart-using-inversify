@@ -5,7 +5,8 @@
   "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node ./src/app.ts"
+    "start": "nodemon ./src/app.ts",
+    "format": "prettier --write \"src/**/*.ts\""
   },
   "keywords": [],
   "author": "",
@@ -24,6 +25,7 @@
     "mongoose": "^8.3.3",
     "nodemailer": "^6.9.13",
     "otp-generator": "^4.0.1",
+    "prettier": "^3.2.5",
     "reflect-metadata": "^0.2.2",
     "swagger-ui-express": "^5.0.0"
   },
